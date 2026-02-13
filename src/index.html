@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chart.js Line/Bar Switch</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 16px; }
+    .toolbar { margin-bottom: 12px; }
+    button { padding: 8px 12px; cursor: pointer; }
+    .hint { margin-top: 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button id="toggleBtn">Wechsel zu Balkendiagramm</button>
+  </div>
+
+  <canvas id="chart" width="900" height="450"></canvas>
+
+  <!-- Kurze Erklärung direkt im Projekt -->
+  <p class="hint">
+    Dieses Diagramm zeigt Beispielwerte (in Tausend) für verschiedene US-Präsidenten.
+    Mit dem Button oben kannst du zwischen Linien- und Balkendiagramm wechseln.
+  </p>
+
+  <script src="main.js"></script>
+</body>
+</html>
+
+
+
