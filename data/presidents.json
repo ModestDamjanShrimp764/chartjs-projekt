@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Donald Trump",
+    "votes": 12200
+  },
+  {
+    "id": 2,
+    "name": "Joe Biden",
+    "votes": 19800
+  },
+  {
+    "id": 3,
+    "name": "Bill Clinton",
+    "votes": 30000
+  },
+  {
+    "id": 4,
+    "name": "Grover Cleveland",
+    "votes": 50000
+  },
+  {
+    "id": 5,
+    "name": "Barack Obama",
+    "votes": 20000
+  },
+  {
+    "id": 6,
+    "name": "Kamala Harris",
+    "votes": 3000
+  }
+]
