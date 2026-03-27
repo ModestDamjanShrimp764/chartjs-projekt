@@ -1,196 +1,97 @@
-# Tutorial: Chart.js Diagramm mit Button
+---
+title: US President Votes Dashboard Tutorial
+---
 
-## Ziel
-In diesem Tutorial lernst du, wie du mit Chart.js ein Diagramm erstellst und mit
-einem Button zwischen einem Linien- und einem Balkendiagramm wechseln kannst.
-Zusätzlich lernst du, wie du Titel, Achsenbeschriftungen und Tooltips (mit Einheit)
-einbaust und wie du die Optik anpasst (Farben, Punkte, Liniensegmente).
+# Goal
+
+In this tutorial, you will learn how to build an interactive dashboard to manage and visualize votes of US presidents. You will be able to add, update, delete and display data in a modern chart.
 
 ---
 
-## Voraussetzungen
+# Previous Knowledge
 
-Du solltest können:
+We'll assume you already know:
 
-- Grundlagen in HTML (Tags, Script einbinden)
-- Grundlagen in JavaScript (Variablen, Funktionen)
-- Visual Studio Code benutzen
-- Git/GitHub verwenden (commit/push)
-
----
-
-## Projektstruktur
-
-So ist das Projekt aufgebaut:
-
-```
-/index.html
-/main.js
-/docs/tutorial.md
-/docs/demo.gif
-```
+- Basics of HTML (tags, canvas)
+- Basics of JavaScript (variables, functions)
+- How to use Visual Studio Code
+- Basic understanding of Node.js
 
 ---
 
-## Schritt 1: Chart.js einbinden (HTML)
+# What you'll learn
 
-In `index.html` wird Chart.js über ein CDN geladen:
+In this tutorial you will learn:
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-```
-
-Damit Chart.js zeichnen kann, brauchen wir ein Canvas:
-
-```html
-<canvas id="chart" width="900" height="450"></canvas>
-```
-
-Der Button wird später benutzt, um zwischen Diagrammtypen zu wechseln:
-
-```html
-<button id="toggleBtn">Wechsel zu Balkendiagramm</button>
-```
-
-Am Schluss wird unser JavaScript geladen:
-
-```html
-<script src="main.js"></script>
-```
+- How to create a dashboard with Chart.js
+- How to connect frontend with backend (API)
+- How to implement CRUD operations (Create, Read, Update, Delete)
+- How to visualize data in charts
+- How to add features like sorting, filtering and export
 
 ---
 
-## Schritt 2: Daten vorbereiten (JavaScript)
+# Tutorial
 
-In `main.js` definieren wir die Namen (labels) und Werte (values):
+## Step 1: Start the project
+
+Start the backend:
+
+
+node server.js
+
+
+Open the frontend (Live Server or browser):
+
+http://127.0.0.1:5500/index.html
+
+---
+
+## Step 2: Load data from backend
 
 ```js
-const labels = [
-  'Donald Trump',
-  'Joe Biden',
-  'Bill Clinton',
-  'Grover Cleveland',
-  'Barack Obama',
-  'Kamala Harris'
-];
-
-const values = [12200, 19800, 30000, 50000, 20000, 3000];
-```
-
-- `labels` = Text auf der X-Achse  
-- `values` = Zahlenwerte zu jedem Label (Anzahl muss gleich sein)
-
----
-
-## Schritt 3: Gemeinsame Einstellungen (Titel, Achsen, Tooltip)
-
-Damit beide Diagrammtypen gleich aussehen, gibt es gemeinsame Optionen:
-
-```js
-plugins: {
-  title: {
-    display: true,
-    text: 'Stimmen von US-Präsidenten (in Tausend)'
-  },
-  tooltip: {
-    callbacks: {
-      label: (context) => context.parsed.y + ' Tausend Stimmen'
-    }
+const response = await fetch("http://localhost:3000/api/presidents");
+const data = await response.json();
+Step 3: Create chart
+new Chart(canvas, {
+  type: "bar",
+  data: {
+    labels,
+    datasets: [{
+      data: values
+    }]
   }
-}
-```
-
----
-
-## Schritt 4: Liniendiagramm (mit farbigen Segmenten)
-
-Für das Liniendiagramm wird `type: 'line'` verwendet.
-
-```js
-segment: {
-  borderColor: (ctx) => {
-    const i = ctx.p0DataIndex;
-    return segmentColors[i] || 'black';
-  }
-}
-```
-
-Zusätzlich wurde die Optik verbessert:
-
-```js
-tension: 0.3,
-pointRadius: 5,
-pointHoverRadius: 7
-```
-
----
-
-## Schritt 5: Balkendiagramm (jede Säule eigene Farbe)
-
-Für das Balkendiagramm wird `type: 'bar'` verwendet.
-
-```js
-backgroundColor: barColorsBg,
-borderColor: barColorsBorder
-```
-
----
-
-## Schritt 6: Umschalten per Button (Line ↔ Bar)
-
-Die Variable `mode` speichert den aktuellen Diagrammtyp:
-
-```js
-let mode = 'line';
-```
-
-Beim Klick auf den Button wird der Typ gewechselt:
-
-```js
-toggleBtn.addEventListener('click', () => {
-  mode = (mode === 'line') ? 'bar' : 'line';
-  render();
 });
-```
+Step 4: Add CRUD functions
+Add:
+POST /api/presidents
+Update:
+PUT /api/presidents/:id
+Delete:
+DELETE /api/presidents/:id
+Step 5: Add features
+Search by name
+Sort by votes
+Show statistics (total, avg, max, min)
+Dark mode
+CSV export
+Ranking with Top 3
+Step 6: Improve UI
+Modern design (glass effect)
+Background image
+Clean layout
+Interactive chart
+Result
 
-Wichtig: Beim Wechsel wird das alte Diagramm zerstört:
+The final result is a complete dashboard where users can:
 
-```js
-if (chart) chart.destroy();
-```
-
----
-
-## Erwartetes Resultat
-
-Das fertige Projekt enthält:
-
-- Ein Diagramm mit Titel und Achsenbeschriftung
-- Einen Tooltip mit Einheit „Tausend Stimmen“
-- Ein Liniendiagramm mit farbigen Segmenten
-- Ein Balkendiagramm mit individuellen Farben
-- Einen Button zum Umschalten
-
-![Diagramm-Demo](demo.gif)
-
----
-
-## Was kann schiefgehen?
-
-1. Canvas-ID passt nicht  
-Wenn im HTML `id="chart"` steht, muss im JS auch `getElementById('chart')` stehen.
-
-2. Chart.js wird nicht geladen  
-Wenn das CDN-Script fehlt oder falsch eingebunden ist, funktioniert `new Chart(...)` nicht.
-
-3. Labels und Werte stimmen nicht überein  
-Wenn du 6 Labels hast, brauchst du auch 6 Werte im Array `values`.
-
----
-
-## Fazit
-
-In diesem Tutorial wurde gezeigt, wie man mit Chart.js ein interaktives
-Diagramm erstellt und zwischen zwei Diagrammtypen wechseln kann.
-Durch zusätzliche Einstellungen wie Titel, Achsenbeschriftungen und Tooltip
-wird das Diagramm verständlicher und übersichtlicher.
+Manage presidents (CRUD)
+View data in a chart
+Analyze statistics
+Filter and sort data
+Export data as CSV
+What could go wrong?
+Backend not running → no data
+Wrong API URL → fetch fails
+Chart.js not loaded → no chart
+Data mismatch → chart errors
